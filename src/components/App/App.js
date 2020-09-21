@@ -6,18 +6,37 @@ import {SearchResults} from "../SearchResults/SearchResults";
 import "./App.css";
 
 trackObject = { //Temporary hardcoded track for App state
-  name: "",
-  artist: "",
-  album: "",
+  name: "song",
+  artist: "band",
+  album: "album",
   id: "",
 };
+
+playlistObject = { //Temporary hardcoded track for playlist
+  playlistName: "songs",
+  pllistTracks: ["song1", "song2", "song3"],
+}
 
 export class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      SearchResults: [trackObject],
+      searchResults: [trackObject],
+      playlist: [playlistObject],
     };
+    this.addTrack = this.addTrack.bind(this);
+  }
+
+  addTrack(track) {
+    if (this.state.playlist.find(savedTrack => savedTrack.id === track.id)) {
+      const newList = this.state.playlist + [track];
+      this.setState({playlist: newList});
+    }
+  }
+
+  removeTrack(track) {
+    const newList = this.state.playlist.filter(savedTrack => savedTrack.id != track.id);
+    this.setState({playlist: newList});
   }
 
   render() {
@@ -27,8 +46,8 @@ export class App extends React.Component {
         <div className="App">
           <SearchBar />
           <div className="App-playlist">
-            <SearchResults SearchResults={SearchResults} />
-            <Playlist />
+            <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
+            <Playlist playlist={this.state.playlist}/>
           </div>
         </div>
       </div>

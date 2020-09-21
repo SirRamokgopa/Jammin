@@ -20,7 +20,7 @@ export class TrackList extends React.Component {
     
     return(
         <div className="TrackList">
-            <Track track={tracks} />
+            <Track track={tracks} onAdd={this.props.onAdd} />
         </div>
     );
   }
