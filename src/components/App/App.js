@@ -5,11 +5,19 @@ import {Playlist} from "../Playlist/Playlist";
 import {SearchResults} from "../SearchResults/SearchResults";
 import "./App.css";
 
+trackObject = { //Temporary hardcoded track for App state
+  name: "",
+  artist: "",
+  album: "",
+  id: "",
+};
 
 export class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      SearchResults: [trackObject],
+    };
   }
 
   render() {
@@ -19,7 +27,7 @@ export class App extends React.Component {
         <div className="App">
           <SearchBar />
           <div className="App-playlist">
-            <SearchResults />
+            <SearchResults SearchResults={SearchResults} />
             <Playlist />
           </div>
         </div>

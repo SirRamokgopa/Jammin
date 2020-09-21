@@ -9,9 +9,18 @@ export class TrackList extends React.Component {
   }
 
   render() {
+    const tracks = this.props.SearchResults.map((track, key) => {
+      return ({
+        name: track.name,
+        artist: track.artist,
+        album: track.album,
+        id: track.key,
+      });
+    })
+    
     return(
         <div className="TrackList">
-            <!-- You will add a map method that renders a set of Track components  -->
+            <Track track={tracks} />
         </div>
     );
   }
