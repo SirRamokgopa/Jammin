@@ -3,6 +3,7 @@ import {SearchBar} from "../SearchBar/SearchBar";
 import {Playlist} from "../Playlist/Playlist";
 import {SearchResults} from "../SearchResults/SearchResults";
 import "./App.css";
+import Spotify from "../../util/Spotify";
 
 const trackObject = () => { //Temporary hardcoded track for App state
   return({
@@ -18,7 +19,7 @@ export class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults: [trackObject(), trackObject(), trackObject(), trackObject()],
+      searchResults: [],
       playlistName: "songsz",
       playlistTracks: [trackObject(), trackObject()],
     };
@@ -52,7 +53,9 @@ export class App extends React.Component {
   }
 
   search(term) {
-    console.log(term);
+    Spotify.search(term).then(searchResults => {
+      this.setState({searchResults: searchResults})
+    });
   }
 
   render() {
