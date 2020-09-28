@@ -11,8 +11,6 @@ const Spotify = {
         // Check for access token match
         const aTokenMatch = window.location.href.match(/access_token=([^&]*)/);
         const expInMatch = window.location.href.match(/expires_in=([^&]*)/);
-        console.log(` accsess token is ${aTokenMatch}`);
-        console.log(` expires in ${expInMatch}`);
 
         if (aTokenMatch && expInMatch) {
             aToken = aTokenMatch[1];
@@ -37,9 +35,7 @@ const Spotify = {
         )
         .then(response => response.json())
         .then((jsonResponse) => {
-            console.log(jsonResponse);
                 if (jsonResponse) {
-                    console.log(jsonResponse);
                     return jsonResponse.tracks.items.map(track => {
                         return {
                             id: track.id,
@@ -54,6 +50,43 @@ const Spotify = {
                     return [];
                 }
             });
+    },
+
+    savePlaylist(pName, trackURIs) {
+        if (!pName || !trackURIs) {
+            return;
+        }
+        const aToken = this.getAccessToken();
+        const headers = {Authorization: `Bearer ${aToken}`};
+        let userID;
+        // Get user ID
+        return fetch(`https://api.spotify.com/v1/me`, {headers: headers})
+        .then(response => response.json())
+        .then(jsonResponse => {
+            userID = jsonResponse.id;
+            // Create new Playlist
+            return fetch(`https://api.spotify.com/v1/users/${userID}/playlists`,
+                {
+                    headers: headers,
+                    method: "POST",
+                    body: JSON.stringify({name: pName}),
+                }
+            )
+            .then(response => response.json())
+            .then(jsonResponse => {
+                const playlistID = jsonResponse.id;
+                return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlistID}/tracks`,
+                {
+                    headers: headers,
+                    method: "POST",
+                    body: JSON.stringify({uris: trackURIs}),
+                })
+                .then(response => response.json())
+                .then(jsonResponse => jsonResponse.snapshot_id);
+            });
+        });
+            
+        
     }
 }; 
 

@@ -5,14 +5,6 @@ import {SearchResults} from "../SearchResults/SearchResults";
 import "./App.css";
 import Spotify from "../../util/Spotify";
 
-const trackObject = () => { //Temporary hardcoded track for App state
-  return({
-    name: "song",
-    artist: "band",
-    album: "album",
-    id: Math.random(),
-  })
-};
 
 
 export class App extends React.Component {
@@ -21,7 +13,7 @@ export class App extends React.Component {
     this.state = {
       searchResults: [],
       playlistName: "songsz",
-      playlistTracks: [trackObject(), trackObject()],
+      playlistTracks: [],
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
@@ -50,6 +42,12 @@ export class App extends React.Component {
 
   savePlaylist() {
     const trackURIs = this.state.playlistTracks.map(track => track.uri);
+    const pName = this.state.playlistName; 
+    Spotify.savePlaylist(pName,trackURIs);
+    this.setState({
+      playlistName: "Songsz",
+      playlistTracks: [],
+    });
   }
 
   search(term) {
