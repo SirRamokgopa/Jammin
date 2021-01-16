@@ -1,5 +1,5 @@
 const clientID =  "e756b74ceb7841e1bf894811ce3d9d74";
-const redirectURI = "http://localhost:3000/";
+const redirectURI = "http://quac-king.surge.sh";
 
 let aToken;
 
